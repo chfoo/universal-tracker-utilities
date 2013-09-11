@@ -1,0 +1,20 @@
+#!/bin/sh -e
+# Stops and starts rsync based on available free space.
+# Intended to give room to the megawarc chunker.
+# Put this file on the rsync host's /etc/cron.hourly/ directory.
+# This script assumes the rsync daemon is run by root.
+
+SPACE_AVAILABLE=`df -P / | tail -1 | awk '{ print $4 }'`
+SPACE_REQUIRED=12582912  # bytes
+RSYNC_QUERY=`ps -u root | grep rsync | grep -v grep`
+RSYNC_QUERY_STATUS_CODE=$?
+
+if [ $SPACE_AVAILABLE -lt $SPACE_REQUIRED ]; then
+    if [ $RSYNC_QUERY_STATUS_CODE -eq 0 ]; then
+        invoke-rc.d rsync stop
+    fi
+else
+    if [ $RSYNC_QUERY_STATUS_CODE -eq 1 ]; then
+        invoke-rc.d rsync start
+    fi
+fi
