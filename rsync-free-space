@@ -8,7 +8,7 @@
 SPACE_AVAILABLE=`df -P / | tail -1 | awk '{ print $4 }'`
 SPACE_REQUIRED=12582912  # bytes
 set +e
-RSYNC_QUERY=`ps -u root f | grep bin/rsync | grep -v grep`
+RSYNC_QUERY=`ps -u root f | grep /bin/rsync | grep -v grep`
 RSYNC_QUERY_STATUS_CODE=$?
 set -e
 
