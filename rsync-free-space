@@ -5,8 +5,8 @@
 # place it in /usr/sbin/ and call it within a crontab entry.
 # This script assumes the rsync daemon is run by root.
 
-SPACE_AVAILABLE=`df -P / | tail -1 | awk '{ print $4 }'`
-SPACE_REQUIRED=12582912  # bytes
+SPACE_AVAILABLE=`df -B1024 -P / | tail -1 | awk '{ print $4 }'`
+SPACE_REQUIRED=12582912  # kilobytes
 set +e
 RSYNC_QUERY=`ps -u root f | grep /bin/rsync | grep -v grep`
 RSYNC_QUERY_STATUS_CODE=$?
