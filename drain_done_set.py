@@ -3,10 +3,11 @@ import redis
 import time
 
 def main():
+    prefix = 'puush'
     r = redis.StrictRedis(host='localhost', port=6379, db=1)
-    with open('done_set_data-{0}.txt'.format(int(time.time())), 'ab') as f:
+    with open('done_set_{1}_data-{0}.txt'.format(int(time.time()), prefix), 'ab') as f:
         while True:
-            item = r.spop('puush:done')
+            item = r.spop('{0}:done'.format(prefix))
             
             if item:
                 f.write(item)
